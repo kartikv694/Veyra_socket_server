@@ -1,0 +1,27 @@
+{
+  "name": "veyra-socket-server",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Standalone Socket.IO signaling server for Veyra. Deployed and run separately from the Next.js app (see README.md) \u2014 it needs a persistent long-lived process, which the Next app's environment does not provide.",
+  "scripts": {
+    "dev": "tsx watch server.ts",
+    "start": "tsx server.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.23.0",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^20.19.43",
+    "dotenv": "^17.4.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5",
+    "prisma": "^7.10.0"
+  }
+}

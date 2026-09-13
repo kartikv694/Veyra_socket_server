@@ -1,0 +1,239 @@
+// ============================================================================
+// Veyra — Multi-Participant Video Meeting System
+// Prisma schema (Prisma 7)
+//
+// Defines the core data model for the platform:
+//   - User        registered accounts that can host or join meetings
+//   - Meeting     a video call room, created and owned by a host
+//   - Participant a join record linking a User to a Meeting they're/were in
+//
+// Naming conventions used throughout:
+//   - Primary keys are auto-incrementing integers (`id`).
+//   - Foreign keys follow the `<relationName>Id` pattern (e.g. `hostId`).
+//   - Nullable timestamp fields (`endAt`, `leftAt`) represent "not yet
+//     happened" rather than an unknown/missing value — see field comments.
+// ============================================================================
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// A registered user of the platform.
+///
+/// A user can act in two capacities:
+///   - Host: creates and controls meetings (`meetingsHosted`).
+///   - Participant: joins meetings created by others, or their own
+///     (`participations` — see the `Participant` join model).
+model Users {
+  /// Surrogate primary key.
+  id Int @id @default(autoincrement())
+
+  /// Unique login identifier. Used for authentication.
+  email String @unique
+
+  /// Optional public-facing handle (e.g. for display in a participant list).
+  username String?
+
+  /// Optional display name shown in the meeting UI (participant tiles, host controls).
+  name String?
+
+  /// Hashed password (never store plain text). Verified during login;
+  /// issued as a JWT/session on success.
+  password String
+
+  /// Meetings this user created. As host, they can mute/remove participants,
+  /// control access, and end the meeting.
+  meetingsHosted Meeting[] @relation("HostedMeetings")
+
+  /// Every meeting this user has joined (as host or as a regular participant),
+  /// including past meetings — see `Participant`.
+  participations Participants[]
+
+  /// Every "asking to join" request this user has made, across meetings.
+  joinRequests JoinRequest[]
+
+  /// Account creation timestamp. Set once, never updated.
+  createdAt DateTime @default(now())
+
+  /// Last time this record was modified. Maintained automatically by Prisma.
+  updatedAt DateTime @updatedAt
+}
+
+/// A single video meeting room.
+///
+/// Created by exactly one `User` (the host) and joined by zero or more
+/// users over time, tracked via `Participant`.
+model Meeting {
+  /// Surrogate primary key.
+  id Int @id @default(autoincrement())
+
+  /// Unique, unguessable room code (e.g. "7fk-2xa-plm") used to join the
+  /// meeting. The shareable link is derived from this at the app layer —
+  /// e.g. `https://veyra.app/room/<token>` — rather than stored redundantly.
+  token String @unique
+
+  /// The user who created this meeting. Automatically assigned as host on
+  /// creation and granted host-only controls (mute/remove participants,
+  /// control access, end meeting).
+  host Users @relation("HostedMeetings", fields: [hostId], references: [id])
+
+  /// Foreign key for `host`.
+  hostId Int
+
+  /// Everyone who has joined this meeting, past or present.
+  participants Participants[]
+
+  /// Email addresses the host has invited — see `Invite`.
+  invites Invite[]
+
+  /// "Asking to join" requests from non-invited joiners — see `JoinRequest`.
+  joinRequests JoinRequest[]
+
+  /// When the meeting room was created (i.e. when the host started it).
+  createdAt DateTime @default(now())
+
+  /// When the meeting ended. `null` while the meeting is still live/open;
+  /// set once the host ends it or the room is otherwise closed.
+  endAt DateTime?
+
+  /// Host-controlled access gate (SRS: "control meeting access"). When
+  /// true, no *new* first-time participant can join — see
+  /// POST /api/rooms/[token]/join — regardless of whether the host is
+  /// currently present. Doesn't affect anyone already in the meeting.
+  locked Boolean @default(false)
+
+  /// Optional secondary access gate (SRS: "Meeting Security"). When set,
+  /// a first-time joiner must supply the matching passcode in their
+  /// POST /api/rooms/join request — a meeting can be secured this way
+  /// even for someone who has the room link/token, since a link can be
+  /// forwarded on without the sender meaning to grant access. `null` means
+  /// no passcode is required. Like `locked`, only gates first-time joins;
+  /// returning participants are never asked for it again.
+  passcode String?
+
+  /// Last time this record was modified. Maintained automatically by Prisma.
+  updatedAt DateTime @updatedAt
+}
+
+/// Join record linking a `User` to a `Meeting` they participated in.
+///
+/// One row is created per user, per meeting, the first time they join —
+/// this is the "who's in this meeting" table the SRS calls for, and it
+/// also carries per-participant state (host flag, mute state, attendance
+/// window) so the meeting room UI can render tiles/controls directly from it.
+model Participants {
+  /// Surrogate primary key.
+  id Int @id @default(autoincrement())
+
+  /// The meeting this participant record belongs to.
+  meeting Meeting @relation(fields: [meetingId], references: [id])
+
+  /// Foreign key for `meeting`.
+  meetingId Int
+
+  /// The user this participant record represents.
+  user Users @relation(fields: [userId], references: [id])
+
+  /// Foreign key for `user`.
+  userId Int
+
+  /// True if this participant is the meeting's host. Mirrors
+  /// `Meeting.hostId` for convenient querying/display (e.g. showing a
+  /// "Host" badge on their tile) without an extra join.
+  isHost Boolean @default(false)
+
+  /// Current microphone state, toggled by the participant themselves or
+  /// forced by the host ("Host can mute participants" per the SRS).
+  isMuted Boolean @default(false)
+
+  /// Mirrors `isMuted` but for the camera — forced off by the host the
+  /// same way, via a symmetric route/event. Like `isMuted`, this is
+  /// one-directional: the host can force it off, only the participant
+  /// themselves can turn it back on.
+  isCameraOff Boolean @default(false)
+
+  /// When this user joined the meeting.
+  joinedAt DateTime @default(now())
+
+  /// When this user left the meeting. `null` while they're still connected;
+  /// set on disconnect/leave, or when the host removes them.
+  leftAt DateTime?
+
+  /// A user can only have one active/historical participant row per
+  /// meeting — prevents duplicate join records for the same user+meeting.
+  @@unique([meetingId, userId])
+}
+
+/// An email address the host has explicitly invited to a meeting, ahead
+/// of them actually joining. Someone joining whose account email matches
+/// an Invite row for that meeting is let straight in (see POST
+/// /api/rooms/[token]/join) — everyone else instead creates a JoinRequest
+/// and waits for the host to admit them. The invited person doesn't need
+/// an account yet at invite time; the match happens by email at join time.
+model Invite {
+  /// Surrogate primary key.
+  id Int @id @default(autoincrement())
+
+  /// The meeting this invite grants entry to.
+  meeting Meeting @relation(fields: [meetingId], references: [id])
+
+  /// Foreign key for `meeting`.
+  meetingId Int
+
+  /// The invited email address — compared case-insensitively against the
+  /// joining user's account email at join time.
+  email String
+
+  /// When the host sent this invite.
+  invitedAt DateTime @default(now())
+
+  /// One invite per email per meeting — inviting the same address twice
+  /// is a no-op, not a duplicate row.
+  @@unique([meetingId, email])
+}
+
+/// A pending "asking to join" request from someone who wasn't on the
+/// invite list and isn't already a participant — the waiting-room
+/// mechanism (SRS: host admits participants before they can join).
+/// Resolved by the host admitting or denying it; either way the row
+/// stays as a record of the decision rather than being deleted.
+model JoinRequest {
+  /// Surrogate primary key.
+  id Int @id @default(autoincrement())
+
+  /// The meeting this request is asking to join.
+  meeting Meeting @relation(fields: [meetingId], references: [id])
+
+  /// Foreign key for `meeting`.
+  meetingId Int
+
+  /// The user asking to join.
+  user Users @relation(fields: [userId], references: [id])
+
+  /// Foreign key for `user`.
+  userId Int
+
+  /// PENDING while waiting on the host; ADMITTED or DENIED once decided.
+  status JoinRequestStatus @default(PENDING)
+
+  /// When this request was created.
+  requestedAt DateTime @default(now())
+
+  /// When the host admitted or denied this request. `null` while pending.
+  resolvedAt DateTime?
+
+  /// One outstanding request per user per meeting — re-asking replaces
+  /// rather than duplicates (see the join route, which upserts this).
+  @@unique([meetingId, userId])
+}
+
+enum JoinRequestStatus {
+  PENDING
+  ADMITTED
+  DENIED
+}
