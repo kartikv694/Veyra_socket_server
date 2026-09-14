@@ -201,6 +201,33 @@ io.on("connection", (socket: Socket<any, any, any, SocketData>) => {
     io.to(to).emit("webrtc:ice-candidate", { from: socket.id, candidate });
   });
 
+  // Host controls are sent directly over the already-authenticated socket.
+  // This is intentionally separate from the Vercel -> Render internal HTTP
+  // bridge: interactive mute/camera controls must keep working even if that
+  // server-to-server bridge is unavailable. The socket itself is authenticated
+  // from the JWT + active participant row, and isHost is read from that row.
+  socket.on("host:mute-participant", ({ userId: targetUserId, muted }: { userId: number; muted: boolean }) => {
+    if (!isHost || !Number.isInteger(targetUserId)) return;
+    io.to(roomToken).emit(muted ? "participant:force-muted" : "participant:force-unmuted", { userId: targetUserId });
+  });
+
+  socket.on("host:camera-participant", ({ userId: targetUserId, cameraOff }: { userId: number; cameraOff: boolean }) => {
+    if (!isHost || !Number.isInteger(targetUserId)) return;
+    io.to(roomToken).emit(cameraOff ? "participant:force-camera-off" : "participant:force-camera-on", { userId: targetUserId });
+  });
+
+  socket.on("host:mute-all", ({ userIds, muted = true }: { userIds: number[]; muted?: boolean }) => {
+    if (!isHost || !Array.isArray(userIds)) return;
+    const ids = userIds.filter((id): id is number => Number.isInteger(id) && id !== userId);
+    io.to(roomToken).emit(muted ? "meeting:mute-all" : "meeting:unmute-all", { userIds: ids });
+  });
+
+  socket.on("host:camera-all", ({ userIds, cameraOff = true }: { userIds: number[]; cameraOff?: boolean }) => {
+    if (!isHost || !Array.isArray(userIds)) return;
+    const ids = userIds.filter((id): id is number => Number.isInteger(id) && id !== userId);
+    io.to(roomToken).emit(cameraOff ? "meeting:camera-off-all" : "meeting:camera-on-all", { userIds: ids });
+  });
+
   // Live mic/camera state — deliberately NOT written to the database. It's
   // ephemeral connection state, not the durable Participant.isMuted field;
   // broadcasting it over the socket is what makes mute icons update in
