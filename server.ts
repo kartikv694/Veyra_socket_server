@@ -43,6 +43,9 @@ interface SocketData {
   userId: number;
   roomToken: string;
   name: string;
+  isHost: boolean;
+  isMuted: boolean;
+  isCameraOff: boolean;
 }
 
 async function readJsonBody(req: IncomingMessage): Promise<unknown> {
@@ -83,10 +86,11 @@ const httpServer = createServer((req: IncomingMessage, res: ServerResponse) => {
             ? userChannel(roomToken, userId)
             : meetingChannel(roomToken);
 
+        const deliveredTo = io.sockets.adapter.rooms.get(channel)?.size ?? 0;
         io.to(channel).emit(event, payload);
         if (disconnect) io.in(channel).disconnectSockets(true);
 
-        res.writeHead(200, { "Content-Type": "application/json" }).end(JSON.stringify({ ok: true }));
+        res.writeHead(200, { "Content-Type": "application/json" }).end(JSON.stringify({ ok: true, deliveredTo }));
       })
       .catch(() => {
         res.writeHead(400).end("Invalid JSON body");
@@ -145,6 +149,9 @@ io.use(async (socket, next) => {
     socket.data.userId = payload.sub;
     socket.data.roomToken = roomToken;
     socket.data.name = participant.user.name ?? participant.user.email;
+    socket.data.isHost = participant.isHost;
+    socket.data.isMuted = participant.isMuted;
+    socket.data.isCameraOff = participant.isCameraOff;
     next();
   } catch (err) {
     console.error("[auth middleware] failed to verify participant:", err);
@@ -153,7 +160,7 @@ io.use(async (socket, next) => {
 });
 
 io.on("connection", (socket: Socket<any, any, any, SocketData>) => {
-  const { roomToken, userId, name } = socket.data;
+  const { roomToken, userId, name, isHost, isMuted, isCameraOff } = socket.data;
   socket.join(roomToken);
   // Lets the internal HTTP API (e.g. host mutes/removes this user) target
   // this specific person without knowing their live socket id.
@@ -167,15 +174,15 @@ io.on("connection", (socket: Socket<any, any, any, SocketData>) => {
         .filter((id) => id !== socket.id)
         .map((id) => {
           const peerSocket = io.sockets.sockets.get(id) as Socket<any, any, any, SocketData> | undefined;
-          return peerSocket ? { socketId: id, userId: peerSocket.data.userId, name: peerSocket.data.name } : null;
+          return peerSocket ? { socketId: id, userId: peerSocket.data.userId, name: peerSocket.data.name, isHost: peerSocket.data.isHost, isMuted: peerSocket.data.isMuted, isCameraOff: peerSocket.data.isCameraOff } : null;
         })
-        .filter((p): p is { socketId: string; userId: number; name: string } => p !== null)
+        .filter((p): p is { socketId: string; userId: number; name: string; isHost: boolean; isMuted: boolean; isCameraOff: boolean } => p !== null)
     : [];
   socket.emit("room:peers", existingPeers);
 
   // Tell everyone already there that someone new has arrived (they'll
   // receive an offer from the newcomer shortly).
-  socket.to(roomToken).emit("peer:joined", { socketId: socket.id, userId, name });
+  socket.to(roomToken).emit("peer:joined", { socketId: socket.id, userId, name, isHost, isMuted, isCameraOff });
 
   // --- WebRTC signaling relay: server never inspects SDP/ICE contents, it
   // just forwards between the two socket ids involved. ---
@@ -230,18 +237,21 @@ io.on("connection", (socket: Socket<any, any, any, SocketData>) => {
   });
 
   socket.on("disconnect", async () => {
-    socket.to(roomToken).emit("peer:left", { socketId: socket.id, userId });
+    // One user can temporarily have two sockets during a refresh/reconnect.
+    // Never mark the DB participant as left while another live socket for the
+    // same user is still in this room.
+    const roomSocketIds = io.sockets.adapter.rooms.get(roomToken);
+    const anotherLiveSocket = roomSocketIds
+      ? [...roomSocketIds].some((id) => {
+          if (id === socket.id) return false;
+          const peerSocket = io.sockets.sockets.get(id) as Socket<any, any, any, SocketData> | undefined;
+          return peerSocket?.data.userId === userId;
+        })
+      : false;
 
-    // This is the piece that was missing: emitting peer:left only tears
-    // down the live WebRTC connection on other clients' screens — it
-    // never touches the database. Only the explicit "Leave" button (POST
-    // /api/rooms/leave) was setting Participant.leftAt, which a page
-    // refresh, closed tab, crash, or lost network connection never
-    // triggers. Without this, the host's roster (which is what decides
-    // whether a tile exists at all, not just whether it has video) keeps
-    // showing that person as still in the meeting indefinitely — and the stale, now-dead WebRTC stream still
-    // attached to that tile is what rendered as a black box instead of
-    // the tile disappearing entirely.
+    socket.to(roomToken).emit("peer:left", { socketId: socket.id, userId });
+    if (anotherLiveSocket) return;
+
     try {
       await prisma.participants.updateMany({
         where: { userId, meeting: { token: roomToken }, leftAt: null },
