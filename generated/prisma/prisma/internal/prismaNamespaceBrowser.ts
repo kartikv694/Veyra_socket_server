@@ -55,7 +55,8 @@ export const ModelName = {
   Meeting: 'Meeting',
   Participants: 'Participants',
   Invite: 'Invite',
-  JoinRequest: 'JoinRequest'
+  JoinRequest: 'JoinRequest',
+  ChatMessage: 'ChatMessage'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -138,6 +139,18 @@ export const JoinRequestScalarFieldEnum = {
 } as const
 
 export type JoinRequestScalarFieldEnum = (typeof JoinRequestScalarFieldEnum)[keyof typeof JoinRequestScalarFieldEnum]
+
+
+export const ChatMessageScalarFieldEnum = {
+  id: 'id',
+  meetingId: 'meetingId',
+  userId: 'userId',
+  fromName: 'fromName',
+  text: 'text',
+  createdAt: 'createdAt'
+} as const
+
+export type ChatMessageScalarFieldEnum = (typeof ChatMessageScalarFieldEnum)[keyof typeof ChatMessageScalarFieldEnum]
 
 
 export const SortOrder = {

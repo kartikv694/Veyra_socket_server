@@ -42,6 +42,7 @@ if (!INTERNAL_SECRET) {
 interface SocketData {
   userId: number;
   roomToken: string;
+  meetingId: number;
   name: string;
   isHost: boolean;
   isMuted: boolean;
@@ -148,6 +149,7 @@ io.use(async (socket, next) => {
 
     socket.data.userId = payload.sub;
     socket.data.roomToken = roomToken;
+    socket.data.meetingId = participant.meetingId;
     socket.data.name = participant.user.name ?? participant.user.email;
     socket.data.isHost = participant.isHost;
     socket.data.isMuted = participant.isMuted;
@@ -254,13 +256,22 @@ io.on("connection", (socket: Socket<any, any, any, SocketData>) => {
   });
 
   // Chat messages — broadcast to the whole room including the sender
-  // (same reasoning as reactions), never stored server-side. A message
-  // history that survives a refresh would need a database table and a
-  // fetch-on-join endpoint; not built here, so chat is live-only.
+  // (same reasoning as reactions), and also saved to the database so a
+  // refresh doesn't lose the conversation for the rest of the meeting.
+  // Not awaited before broadcasting — the live relay is the fast path
+  // participants actually see; the save is what a subsequent page load
+  // reads back via GET /api/rooms/[token]/chat. Deleted entirely when
+  // the meeting ends (see the end route), matching the room's "live
+  // only, not saved permanently" chat design — this closes the "lost on
+  // refresh" gap without turning chat into a permanent record.
   socket.on("peer:chat-message", ({ text }: { text: string }) => {
     const trimmed = typeof text === "string" ? text.trim().slice(0, 2000) : "";
     if (!trimmed) return;
-    io.to(roomToken).emit("peer:chat-message", { text: trimmed, userId, name, at: Date.now() });
+    const at = Date.now();
+    io.to(roomToken).emit("peer:chat-message", { text: trimmed, userId, name, at });
+    prisma.chatMessage
+      .create({ data: { meetingId: socket.data.meetingId, userId, fromName: name, text: trimmed } })
+      .catch((err) => console.error(`Failed to save chat message for meeting ${roomToken}:`, err));
   });
 
   socket.on("disconnect", async () => {

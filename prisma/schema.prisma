@@ -46,6 +46,18 @@ model Users {
   /// issued as a JWT/session on success.
   password String
 
+  /// Hashed 6-digit forgot-password code (same reasoning as `password` —
+  /// if the DB leaks, the code alone isn't enough). Set by
+  /// POST /api/auth/forgot-password, cleared once actually used to reset
+  /// the password. `null` when no reset is in progress.
+  resetCodeHash String?
+
+  /// When `resetCodeHash` expires — checked by both verify-reset-code and
+  /// reset-password, neither of which clears the code on its own (only a
+  /// successful reset does), so an expired code just needs a fresh
+  /// request, not any manual cleanup.
+  resetCodeExpiresAt DateTime?
+
   /// Meetings this user created. As host, they can mute/remove participants,
   /// control access, and end the meeting.
   meetingsHosted Meeting[] @relation("HostedMeetings")
@@ -94,8 +106,20 @@ model Meeting {
   /// "Asking to join" requests from non-invited joiners — see `JoinRequest`.
   joinRequests JoinRequest[]
 
+  /// Live in-meeting chat, kept only for the meeting's duration — see
+  /// `ChatMessage`. Deleted when the host ends the meeting (POST
+  /// /api/rooms/[token]/end), matching the room's own "live only, not
+  /// saved anywhere" chat design: this is what lets a refresh recover the
+  /// conversation while the meeting is still going, without turning chat
+  /// into a permanent record once it's over.
+  chatMessages ChatMessage[]
+
   /// When the meeting room was created (i.e. when the host started it).
   createdAt DateTime @default(now())
+
+  /// Optional future start time for meetings created through the scheduler.
+  /// Null means the meeting is available immediately.
+  scheduledAt DateTime?
 
   /// When the meeting ended. `null` while the meeting is still live/open;
   /// set once the host ends it or the room is otherwise closed.
@@ -118,6 +142,9 @@ model Meeting {
 
   /// Last time this record was modified. Maintained automatically by Prisma.
   updatedAt DateTime @updatedAt
+
+  @@index([hostId, createdAt])
+  @@index([scheduledAt])
 }
 
 /// Join record linking a `User` to a `Meeting` they participated in.
@@ -167,6 +194,8 @@ model Participants {
   /// A user can only have one active/historical participant row per
   /// meeting — prevents duplicate join records for the same user+meeting.
   @@unique([meetingId, userId])
+  @@index([userId, leftAt])
+  @@index([meetingId, leftAt])
 }
 
 /// An email address the host has explicitly invited to a meeting, ahead
@@ -230,10 +259,44 @@ model JoinRequest {
   /// One outstanding request per user per meeting — re-asking replaces
   /// rather than duplicates (see the join route, which upserts this).
   @@unique([meetingId, userId])
+  @@index([meetingId, status])
 }
 
 enum JoinRequestStatus {
   PENDING
   ADMITTED
   DENIED
+}
+
+/// One in-meeting chat message. Written by the socket server (see
+/// backend/server.ts's peer:chat-message handler) the moment a message is
+/// sent, and read back by the room page on load/refresh so a reload
+/// doesn't lose the conversation — the gap this model closes. `fromName`
+/// is stored directly rather than joined from `Users` on every read,
+/// since a display name shouldn't retroactively change what an old
+/// message showed if the sender later renames their account.
+model ChatMessage {
+  /// Surrogate primary key.
+  id Int @id @default(autoincrement())
+
+  /// The meeting this message belongs to. Rows are deleted (not just
+  /// hidden) when the host ends the meeting — see `Meeting.chatMessages`.
+  meeting Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+
+  /// Foreign key for `meeting`.
+  meetingId Int
+
+  /// Who sent it.
+  userId Int
+
+  /// Sender's display name at the time they sent this message.
+  fromName String
+
+  /// The message content.
+  text String
+
+  /// When it was sent.
+  createdAt DateTime @default(now())
+
+  @@index([meetingId, createdAt])
 }

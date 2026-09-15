@@ -45,6 +45,8 @@ export type UsersMinAggregateOutputType = {
   username: string | null
   name: string | null
   password: string | null
+  resetCodeHash: string | null
+  resetCodeExpiresAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -55,6 +57,8 @@ export type UsersMaxAggregateOutputType = {
   username: string | null
   name: string | null
   password: string | null
+  resetCodeHash: string | null
+  resetCodeExpiresAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -65,6 +69,8 @@ export type UsersCountAggregateOutputType = {
   username: number
   name: number
   password: number
+  resetCodeHash: number
+  resetCodeExpiresAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -85,6 +91,8 @@ export type UsersMinAggregateInputType = {
   username?: true
   name?: true
   password?: true
+  resetCodeHash?: true
+  resetCodeExpiresAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -95,6 +103,8 @@ export type UsersMaxAggregateInputType = {
   username?: true
   name?: true
   password?: true
+  resetCodeHash?: true
+  resetCodeExpiresAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -105,6 +115,8 @@ export type UsersCountAggregateInputType = {
   username?: true
   name?: true
   password?: true
+  resetCodeHash?: true
+  resetCodeExpiresAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -202,6 +214,8 @@ export type UsersGroupByOutputType = {
   username: string | null
   name: string | null
   password: string
+  resetCodeHash: string | null
+  resetCodeExpiresAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: UsersCountAggregateOutputType | null
@@ -235,6 +249,8 @@ export type UsersWhereInput = {
   username?: Prisma.StringNullableFilter<"Users"> | string | null
   name?: Prisma.StringNullableFilter<"Users"> | string | null
   password?: Prisma.StringFilter<"Users"> | string
+  resetCodeHash?: Prisma.StringNullableFilter<"Users"> | string | null
+  resetCodeExpiresAt?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   meetingsHosted?: Prisma.MeetingListRelationFilter
@@ -248,6 +264,8 @@ export type UsersOrderByWithRelationInput = {
   username?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrder
+  resetCodeHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  resetCodeExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   meetingsHosted?: Prisma.MeetingOrderByRelationAggregateInput
@@ -264,6 +282,8 @@ export type UsersWhereUniqueInput = Prisma.AtLeast<{
   username?: Prisma.StringNullableFilter<"Users"> | string | null
   name?: Prisma.StringNullableFilter<"Users"> | string | null
   password?: Prisma.StringFilter<"Users"> | string
+  resetCodeHash?: Prisma.StringNullableFilter<"Users"> | string | null
+  resetCodeExpiresAt?: Prisma.DateTimeNullableFilter<"Users"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Users"> | Date | string
   meetingsHosted?: Prisma.MeetingListRelationFilter
@@ -277,6 +297,8 @@ export type UsersOrderByWithAggregationInput = {
   username?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrder
+  resetCodeHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  resetCodeExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UsersCountOrderByAggregateInput
@@ -295,6 +317,8 @@ export type UsersScalarWhereWithAggregatesInput = {
   username?: Prisma.StringNullableWithAggregatesFilter<"Users"> | string | null
   name?: Prisma.StringNullableWithAggregatesFilter<"Users"> | string | null
   password?: Prisma.StringWithAggregatesFilter<"Users"> | string
+  resetCodeHash?: Prisma.StringNullableWithAggregatesFilter<"Users"> | string | null
+  resetCodeExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Users"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Users"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Users"> | Date | string
 }
@@ -304,6 +328,8 @@ export type UsersCreateInput = {
   username?: string | null
   name?: string | null
   password: string
+  resetCodeHash?: string | null
+  resetCodeExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   meetingsHosted?: Prisma.MeetingCreateNestedManyWithoutHostInput
@@ -317,6 +343,8 @@ export type UsersUncheckedCreateInput = {
   username?: string | null
   name?: string | null
   password: string
+  resetCodeHash?: string | null
+  resetCodeExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   meetingsHosted?: Prisma.MeetingUncheckedCreateNestedManyWithoutHostInput
@@ -329,6 +357,8 @@ export type UsersUpdateInput = {
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  resetCodeHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   meetingsHosted?: Prisma.MeetingUpdateManyWithoutHostNestedInput
@@ -342,6 +372,8 @@ export type UsersUncheckedUpdateInput = {
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  resetCodeHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   meetingsHosted?: Prisma.MeetingUncheckedUpdateManyWithoutHostNestedInput
@@ -355,6 +387,8 @@ export type UsersCreateManyInput = {
   username?: string | null
   name?: string | null
   password: string
+  resetCodeHash?: string | null
+  resetCodeExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -364,6 +398,8 @@ export type UsersUpdateManyMutationInput = {
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  resetCodeHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -374,6 +410,8 @@ export type UsersUncheckedUpdateManyInput = {
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  resetCodeHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -384,6 +422,8 @@ export type UsersCountOrderByAggregateInput = {
   username?: Prisma.SortOrder
   name?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  resetCodeHash?: Prisma.SortOrder
+  resetCodeExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -398,6 +438,8 @@ export type UsersMaxOrderByAggregateInput = {
   username?: Prisma.SortOrder
   name?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  resetCodeHash?: Prisma.SortOrder
+  resetCodeExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -408,6 +450,8 @@ export type UsersMinOrderByAggregateInput = {
   username?: Prisma.SortOrder
   name?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  resetCodeHash?: Prisma.SortOrder
+  resetCodeExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -427,6 +471,10 @@ export type StringFieldUpdateOperationsInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -488,6 +536,8 @@ export type UsersCreateWithoutMeetingsHostedInput = {
   username?: string | null
   name?: string | null
   password: string
+  resetCodeHash?: string | null
+  resetCodeExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   participations?: Prisma.ParticipantsCreateNestedManyWithoutUserInput
@@ -500,6 +550,8 @@ export type UsersUncheckedCreateWithoutMeetingsHostedInput = {
   username?: string | null
   name?: string | null
   password: string
+  resetCodeHash?: string | null
+  resetCodeExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   participations?: Prisma.ParticipantsUncheckedCreateNestedManyWithoutUserInput
@@ -527,6 +579,8 @@ export type UsersUpdateWithoutMeetingsHostedInput = {
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  resetCodeHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   participations?: Prisma.ParticipantsUpdateManyWithoutUserNestedInput
@@ -539,6 +593,8 @@ export type UsersUncheckedUpdateWithoutMeetingsHostedInput = {
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  resetCodeHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   participations?: Prisma.ParticipantsUncheckedUpdateManyWithoutUserNestedInput
@@ -550,6 +606,8 @@ export type UsersCreateWithoutParticipationsInput = {
   username?: string | null
   name?: string | null
   password: string
+  resetCodeHash?: string | null
+  resetCodeExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   meetingsHosted?: Prisma.MeetingCreateNestedManyWithoutHostInput
@@ -562,6 +620,8 @@ export type UsersUncheckedCreateWithoutParticipationsInput = {
   username?: string | null
   name?: string | null
   password: string
+  resetCodeHash?: string | null
+  resetCodeExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   meetingsHosted?: Prisma.MeetingUncheckedCreateNestedManyWithoutHostInput
@@ -589,6 +649,8 @@ export type UsersUpdateWithoutParticipationsInput = {
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  resetCodeHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   meetingsHosted?: Prisma.MeetingUpdateManyWithoutHostNestedInput
@@ -601,6 +663,8 @@ export type UsersUncheckedUpdateWithoutParticipationsInput = {
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  resetCodeHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   meetingsHosted?: Prisma.MeetingUncheckedUpdateManyWithoutHostNestedInput
@@ -612,6 +676,8 @@ export type UsersCreateWithoutJoinRequestsInput = {
   username?: string | null
   name?: string | null
   password: string
+  resetCodeHash?: string | null
+  resetCodeExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   meetingsHosted?: Prisma.MeetingCreateNestedManyWithoutHostInput
@@ -624,6 +690,8 @@ export type UsersUncheckedCreateWithoutJoinRequestsInput = {
   username?: string | null
   name?: string | null
   password: string
+  resetCodeHash?: string | null
+  resetCodeExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   meetingsHosted?: Prisma.MeetingUncheckedCreateNestedManyWithoutHostInput
@@ -651,6 +719,8 @@ export type UsersUpdateWithoutJoinRequestsInput = {
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  resetCodeHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   meetingsHosted?: Prisma.MeetingUpdateManyWithoutHostNestedInput
@@ -663,6 +733,8 @@ export type UsersUncheckedUpdateWithoutJoinRequestsInput = {
   username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  resetCodeHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetCodeExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   meetingsHosted?: Prisma.MeetingUncheckedUpdateManyWithoutHostNestedInput
@@ -724,6 +796,8 @@ export type UsersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   username?: boolean
   name?: boolean
   password?: boolean
+  resetCodeHash?: boolean
+  resetCodeExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   meetingsHosted?: boolean | Prisma.Users$meetingsHostedArgs<ExtArgs>
@@ -738,6 +812,8 @@ export type UsersSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   username?: boolean
   name?: boolean
   password?: boolean
+  resetCodeHash?: boolean
+  resetCodeExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["users"]>
@@ -748,6 +824,8 @@ export type UsersSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   username?: boolean
   name?: boolean
   password?: boolean
+  resetCodeHash?: boolean
+  resetCodeExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["users"]>
@@ -758,11 +836,13 @@ export type UsersSelectScalar = {
   username?: boolean
   name?: boolean
   password?: boolean
+  resetCodeHash?: boolean
+  resetCodeExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UsersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "username" | "name" | "password" | "createdAt" | "updatedAt", ExtArgs["result"]["users"]>
+export type UsersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "username" | "name" | "password" | "resetCodeHash" | "resetCodeExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["users"]>
 export type UsersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   meetingsHosted?: boolean | Prisma.Users$meetingsHostedArgs<ExtArgs>
   participations?: boolean | Prisma.Users$participationsArgs<ExtArgs>
@@ -812,6 +892,20 @@ export type $UsersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
      * issued as a JWT/session on success.
      */
     password: string
+    /**
+     * Hashed 6-digit forgot-password code (same reasoning as `password` —
+     * if the DB leaks, the code alone isn't enough). Set by
+     * POST /api/auth/forgot-password, cleared once actually used to reset
+     * the password. `null` when no reset is in progress.
+     */
+    resetCodeHash: string | null
+    /**
+     * When `resetCodeHash` expires — checked by both verify-reset-code and
+     * reset-password, neither of which clears the code on its own (only a
+     * successful reset does), so an expired code just needs a fresh
+     * request, not any manual cleanup.
+     */
+    resetCodeExpiresAt: Date | null
     /**
      * Account creation timestamp. Set once, never updated.
      */
@@ -1251,6 +1345,8 @@ export interface UsersFieldRefs {
   readonly username: Prisma.FieldRef<"Users", 'String'>
   readonly name: Prisma.FieldRef<"Users", 'String'>
   readonly password: Prisma.FieldRef<"Users", 'String'>
+  readonly resetCodeHash: Prisma.FieldRef<"Users", 'String'>
+  readonly resetCodeExpiresAt: Prisma.FieldRef<"Users", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Users", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Users", 'DateTime'>
 }
