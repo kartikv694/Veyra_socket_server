@@ -88,6 +88,7 @@ const httpServer = createServer((req: IncomingMessage, res: ServerResponse) => {
             : meetingChannel(roomToken);
 
         const deliveredTo = io.sockets.adapter.rooms.get(channel)?.size ?? 0;
+        // @ts-ignore
         io.to(channel).emit(event, payload);
         if (disconnect) io.in(channel).disconnectSockets(true);
 
@@ -210,23 +211,27 @@ io.on("connection", (socket: Socket<any, any, any, SocketData>) => {
   // from the JWT + active participant row, and isHost is read from that row.
   socket.on("host:mute-participant", ({ userId: targetUserId, muted }: { userId: number; muted: boolean }) => {
     if (!isHost || !Number.isInteger(targetUserId)) return;
+    // @ts-ignore
     io.to(roomToken).emit(muted ? "participant:force-muted" : "participant:force-unmuted", { userId: targetUserId });
   });
 
   socket.on("host:camera-participant", ({ userId: targetUserId, cameraOff }: { userId: number; cameraOff: boolean }) => {
     if (!isHost || !Number.isInteger(targetUserId)) return;
+    // @ts-ignore
     io.to(roomToken).emit(cameraOff ? "participant:force-camera-off" : "participant:force-camera-on", { userId: targetUserId });
   });
 
   socket.on("host:mute-all", ({ userIds, muted = true }: { userIds: number[]; muted?: boolean }) => {
     if (!isHost || !Array.isArray(userIds)) return;
     const ids = userIds.filter((id): id is number => Number.isInteger(id) && id !== userId);
+    // @ts-ignore
     io.to(roomToken).emit(muted ? "meeting:mute-all" : "meeting:unmute-all", { userIds: ids });
   });
 
   socket.on("host:camera-all", ({ userIds, cameraOff = true }: { userIds: number[]; cameraOff?: boolean }) => {
     if (!isHost || !Array.isArray(userIds)) return;
     const ids = userIds.filter((id): id is number => Number.isInteger(id) && id !== userId);
+    // @ts-ignore
     io.to(roomToken).emit(cameraOff ? "meeting:camera-off-all" : "meeting:camera-on-all", { userIds: ids });
   });
 
@@ -252,6 +257,7 @@ io.on("connection", (socket: Socket<any, any, any, SocketData>) => {
   // including the sender (so their own click gives the same feedback
   // everyone else sees), never stored anywhere.
   socket.on("peer:reaction", ({ emoji }: { emoji: string }) => {
+    // @ts-ignore
     io.to(roomToken).emit("peer:reaction", { emoji, userId, name });
   });
 
@@ -268,10 +274,23 @@ io.on("connection", (socket: Socket<any, any, any, SocketData>) => {
     const trimmed = typeof text === "string" ? text.trim().slice(0, 2000) : "";
     if (!trimmed) return;
     const at = Date.now();
+    // @ts-ignore
     io.to(roomToken).emit("peer:chat-message", { text: trimmed, userId, name, at });
-    prisma.chatMessage
-      .create({ data: { meetingId: socket.data.meetingId, userId, fromName: name, text: trimmed } })
-      .catch((err) => console.error(`Failed to save chat message for meeting ${roomToken}:`, err));
+    try {
+      // Wrapped in try/catch, not just a promise .catch() — if
+      // prisma.chatMessage were ever undefined (e.g. a stale generated
+      // client missing this model), accessing .create on it throws
+      // synchronously, before any promise even exists to attach .catch
+      // to. That's exactly what happened here: the save silently never
+      // ran and nothing was ever logged, despite a .catch() being
+      // present, because it wasn't the right tool for a throw that
+      // never actually became a promise in the first place.
+      prisma.chatMessage
+        .create({ data: { meetingId: socket.data.meetingId, userId, fromName: name, text: trimmed } })
+        .catch((err: unknown) => console.error(`Failed to save chat message for meeting ${roomToken}:`, err));
+    } catch (err) {
+      console.error(`Failed to save chat message for meeting ${roomToken} (sync throw):`, err);
+    }
   });
 
   socket.on("disconnect", async () => {

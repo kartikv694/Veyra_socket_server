@@ -259,7 +259,6 @@ export type MeetingWhereInput = {
   participants?: Prisma.ParticipantsListRelationFilter
   invites?: Prisma.InviteListRelationFilter
   joinRequests?: Prisma.JoinRequestListRelationFilter
-  chatMessages?: Prisma.ChatMessageListRelationFilter
 }
 
 export type MeetingOrderByWithRelationInput = {
@@ -276,7 +275,6 @@ export type MeetingOrderByWithRelationInput = {
   participants?: Prisma.ParticipantsOrderByRelationAggregateInput
   invites?: Prisma.InviteOrderByRelationAggregateInput
   joinRequests?: Prisma.JoinRequestOrderByRelationAggregateInput
-  chatMessages?: Prisma.ChatMessageOrderByRelationAggregateInput
 }
 
 export type MeetingWhereUniqueInput = Prisma.AtLeast<{
@@ -296,7 +294,6 @@ export type MeetingWhereUniqueInput = Prisma.AtLeast<{
   participants?: Prisma.ParticipantsListRelationFilter
   invites?: Prisma.InviteListRelationFilter
   joinRequests?: Prisma.JoinRequestListRelationFilter
-  chatMessages?: Prisma.ChatMessageListRelationFilter
 }, "id" | "token">
 
 export type MeetingOrderByWithAggregationInput = {
@@ -343,7 +340,6 @@ export type MeetingCreateInput = {
   participants?: Prisma.ParticipantsCreateNestedManyWithoutMeetingInput
   invites?: Prisma.InviteCreateNestedManyWithoutMeetingInput
   joinRequests?: Prisma.JoinRequestCreateNestedManyWithoutMeetingInput
-  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutMeetingInput
 }
 
 export type MeetingUncheckedCreateInput = {
@@ -359,7 +355,6 @@ export type MeetingUncheckedCreateInput = {
   participants?: Prisma.ParticipantsUncheckedCreateNestedManyWithoutMeetingInput
   invites?: Prisma.InviteUncheckedCreateNestedManyWithoutMeetingInput
   joinRequests?: Prisma.JoinRequestUncheckedCreateNestedManyWithoutMeetingInput
-  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutMeetingInput
 }
 
 export type MeetingUpdateInput = {
@@ -374,7 +369,6 @@ export type MeetingUpdateInput = {
   participants?: Prisma.ParticipantsUpdateManyWithoutMeetingNestedInput
   invites?: Prisma.InviteUpdateManyWithoutMeetingNestedInput
   joinRequests?: Prisma.JoinRequestUpdateManyWithoutMeetingNestedInput
-  chatMessages?: Prisma.ChatMessageUpdateManyWithoutMeetingNestedInput
 }
 
 export type MeetingUncheckedUpdateInput = {
@@ -390,7 +384,6 @@ export type MeetingUncheckedUpdateInput = {
   participants?: Prisma.ParticipantsUncheckedUpdateManyWithoutMeetingNestedInput
   invites?: Prisma.InviteUncheckedUpdateManyWithoutMeetingNestedInput
   joinRequests?: Prisma.JoinRequestUncheckedUpdateManyWithoutMeetingNestedInput
-  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutMeetingNestedInput
 }
 
 export type MeetingCreateManyInput = {
@@ -576,20 +569,6 @@ export type MeetingUpdateOneRequiredWithoutJoinRequestsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MeetingUpdateToOneWithWhereWithoutJoinRequestsInput, Prisma.MeetingUpdateWithoutJoinRequestsInput>, Prisma.MeetingUncheckedUpdateWithoutJoinRequestsInput>
 }
 
-export type MeetingCreateNestedOneWithoutChatMessagesInput = {
-  create?: Prisma.XOR<Prisma.MeetingCreateWithoutChatMessagesInput, Prisma.MeetingUncheckedCreateWithoutChatMessagesInput>
-  connectOrCreate?: Prisma.MeetingCreateOrConnectWithoutChatMessagesInput
-  connect?: Prisma.MeetingWhereUniqueInput
-}
-
-export type MeetingUpdateOneRequiredWithoutChatMessagesNestedInput = {
-  create?: Prisma.XOR<Prisma.MeetingCreateWithoutChatMessagesInput, Prisma.MeetingUncheckedCreateWithoutChatMessagesInput>
-  connectOrCreate?: Prisma.MeetingCreateOrConnectWithoutChatMessagesInput
-  upsert?: Prisma.MeetingUpsertWithoutChatMessagesInput
-  connect?: Prisma.MeetingWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MeetingUpdateToOneWithWhereWithoutChatMessagesInput, Prisma.MeetingUpdateWithoutChatMessagesInput>, Prisma.MeetingUncheckedUpdateWithoutChatMessagesInput>
-}
-
 export type MeetingCreateWithoutHostInput = {
   token: string
   createdAt?: Date | string
@@ -601,7 +580,6 @@ export type MeetingCreateWithoutHostInput = {
   participants?: Prisma.ParticipantsCreateNestedManyWithoutMeetingInput
   invites?: Prisma.InviteCreateNestedManyWithoutMeetingInput
   joinRequests?: Prisma.JoinRequestCreateNestedManyWithoutMeetingInput
-  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutMeetingInput
 }
 
 export type MeetingUncheckedCreateWithoutHostInput = {
@@ -616,7 +594,6 @@ export type MeetingUncheckedCreateWithoutHostInput = {
   participants?: Prisma.ParticipantsUncheckedCreateNestedManyWithoutMeetingInput
   invites?: Prisma.InviteUncheckedCreateNestedManyWithoutMeetingInput
   joinRequests?: Prisma.JoinRequestUncheckedCreateNestedManyWithoutMeetingInput
-  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutMeetingInput
 }
 
 export type MeetingCreateOrConnectWithoutHostInput = {
@@ -671,7 +648,6 @@ export type MeetingCreateWithoutParticipantsInput = {
   host: Prisma.UsersCreateNestedOneWithoutMeetingsHostedInput
   invites?: Prisma.InviteCreateNestedManyWithoutMeetingInput
   joinRequests?: Prisma.JoinRequestCreateNestedManyWithoutMeetingInput
-  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutMeetingInput
 }
 
 export type MeetingUncheckedCreateWithoutParticipantsInput = {
@@ -686,7 +662,6 @@ export type MeetingUncheckedCreateWithoutParticipantsInput = {
   updatedAt?: Date | string
   invites?: Prisma.InviteUncheckedCreateNestedManyWithoutMeetingInput
   joinRequests?: Prisma.JoinRequestUncheckedCreateNestedManyWithoutMeetingInput
-  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutMeetingInput
 }
 
 export type MeetingCreateOrConnectWithoutParticipantsInput = {
@@ -716,7 +691,6 @@ export type MeetingUpdateWithoutParticipantsInput = {
   host?: Prisma.UsersUpdateOneRequiredWithoutMeetingsHostedNestedInput
   invites?: Prisma.InviteUpdateManyWithoutMeetingNestedInput
   joinRequests?: Prisma.JoinRequestUpdateManyWithoutMeetingNestedInput
-  chatMessages?: Prisma.ChatMessageUpdateManyWithoutMeetingNestedInput
 }
 
 export type MeetingUncheckedUpdateWithoutParticipantsInput = {
@@ -731,7 +705,6 @@ export type MeetingUncheckedUpdateWithoutParticipantsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   invites?: Prisma.InviteUncheckedUpdateManyWithoutMeetingNestedInput
   joinRequests?: Prisma.JoinRequestUncheckedUpdateManyWithoutMeetingNestedInput
-  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutMeetingNestedInput
 }
 
 export type MeetingCreateWithoutInvitesInput = {
@@ -745,7 +718,6 @@ export type MeetingCreateWithoutInvitesInput = {
   host: Prisma.UsersCreateNestedOneWithoutMeetingsHostedInput
   participants?: Prisma.ParticipantsCreateNestedManyWithoutMeetingInput
   joinRequests?: Prisma.JoinRequestCreateNestedManyWithoutMeetingInput
-  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutMeetingInput
 }
 
 export type MeetingUncheckedCreateWithoutInvitesInput = {
@@ -760,7 +732,6 @@ export type MeetingUncheckedCreateWithoutInvitesInput = {
   updatedAt?: Date | string
   participants?: Prisma.ParticipantsUncheckedCreateNestedManyWithoutMeetingInput
   joinRequests?: Prisma.JoinRequestUncheckedCreateNestedManyWithoutMeetingInput
-  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutMeetingInput
 }
 
 export type MeetingCreateOrConnectWithoutInvitesInput = {
@@ -790,7 +761,6 @@ export type MeetingUpdateWithoutInvitesInput = {
   host?: Prisma.UsersUpdateOneRequiredWithoutMeetingsHostedNestedInput
   participants?: Prisma.ParticipantsUpdateManyWithoutMeetingNestedInput
   joinRequests?: Prisma.JoinRequestUpdateManyWithoutMeetingNestedInput
-  chatMessages?: Prisma.ChatMessageUpdateManyWithoutMeetingNestedInput
 }
 
 export type MeetingUncheckedUpdateWithoutInvitesInput = {
@@ -805,7 +775,6 @@ export type MeetingUncheckedUpdateWithoutInvitesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   participants?: Prisma.ParticipantsUncheckedUpdateManyWithoutMeetingNestedInput
   joinRequests?: Prisma.JoinRequestUncheckedUpdateManyWithoutMeetingNestedInput
-  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutMeetingNestedInput
 }
 
 export type MeetingCreateWithoutJoinRequestsInput = {
@@ -819,7 +788,6 @@ export type MeetingCreateWithoutJoinRequestsInput = {
   host: Prisma.UsersCreateNestedOneWithoutMeetingsHostedInput
   participants?: Prisma.ParticipantsCreateNestedManyWithoutMeetingInput
   invites?: Prisma.InviteCreateNestedManyWithoutMeetingInput
-  chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutMeetingInput
 }
 
 export type MeetingUncheckedCreateWithoutJoinRequestsInput = {
@@ -834,7 +802,6 @@ export type MeetingUncheckedCreateWithoutJoinRequestsInput = {
   updatedAt?: Date | string
   participants?: Prisma.ParticipantsUncheckedCreateNestedManyWithoutMeetingInput
   invites?: Prisma.InviteUncheckedCreateNestedManyWithoutMeetingInput
-  chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutMeetingInput
 }
 
 export type MeetingCreateOrConnectWithoutJoinRequestsInput = {
@@ -864,7 +831,6 @@ export type MeetingUpdateWithoutJoinRequestsInput = {
   host?: Prisma.UsersUpdateOneRequiredWithoutMeetingsHostedNestedInput
   participants?: Prisma.ParticipantsUpdateManyWithoutMeetingNestedInput
   invites?: Prisma.InviteUpdateManyWithoutMeetingNestedInput
-  chatMessages?: Prisma.ChatMessageUpdateManyWithoutMeetingNestedInput
 }
 
 export type MeetingUncheckedUpdateWithoutJoinRequestsInput = {
@@ -879,81 +845,6 @@ export type MeetingUncheckedUpdateWithoutJoinRequestsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   participants?: Prisma.ParticipantsUncheckedUpdateManyWithoutMeetingNestedInput
   invites?: Prisma.InviteUncheckedUpdateManyWithoutMeetingNestedInput
-  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutMeetingNestedInput
-}
-
-export type MeetingCreateWithoutChatMessagesInput = {
-  token: string
-  createdAt?: Date | string
-  scheduledAt?: Date | string | null
-  endAt?: Date | string | null
-  locked?: boolean
-  passcode?: string | null
-  updatedAt?: Date | string
-  host: Prisma.UsersCreateNestedOneWithoutMeetingsHostedInput
-  participants?: Prisma.ParticipantsCreateNestedManyWithoutMeetingInput
-  invites?: Prisma.InviteCreateNestedManyWithoutMeetingInput
-  joinRequests?: Prisma.JoinRequestCreateNestedManyWithoutMeetingInput
-}
-
-export type MeetingUncheckedCreateWithoutChatMessagesInput = {
-  id?: number
-  token: string
-  hostId: number
-  createdAt?: Date | string
-  scheduledAt?: Date | string | null
-  endAt?: Date | string | null
-  locked?: boolean
-  passcode?: string | null
-  updatedAt?: Date | string
-  participants?: Prisma.ParticipantsUncheckedCreateNestedManyWithoutMeetingInput
-  invites?: Prisma.InviteUncheckedCreateNestedManyWithoutMeetingInput
-  joinRequests?: Prisma.JoinRequestUncheckedCreateNestedManyWithoutMeetingInput
-}
-
-export type MeetingCreateOrConnectWithoutChatMessagesInput = {
-  where: Prisma.MeetingWhereUniqueInput
-  create: Prisma.XOR<Prisma.MeetingCreateWithoutChatMessagesInput, Prisma.MeetingUncheckedCreateWithoutChatMessagesInput>
-}
-
-export type MeetingUpsertWithoutChatMessagesInput = {
-  update: Prisma.XOR<Prisma.MeetingUpdateWithoutChatMessagesInput, Prisma.MeetingUncheckedUpdateWithoutChatMessagesInput>
-  create: Prisma.XOR<Prisma.MeetingCreateWithoutChatMessagesInput, Prisma.MeetingUncheckedCreateWithoutChatMessagesInput>
-  where?: Prisma.MeetingWhereInput
-}
-
-export type MeetingUpdateToOneWithWhereWithoutChatMessagesInput = {
-  where?: Prisma.MeetingWhereInput
-  data: Prisma.XOR<Prisma.MeetingUpdateWithoutChatMessagesInput, Prisma.MeetingUncheckedUpdateWithoutChatMessagesInput>
-}
-
-export type MeetingUpdateWithoutChatMessagesInput = {
-  token?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  host?: Prisma.UsersUpdateOneRequiredWithoutMeetingsHostedNestedInput
-  participants?: Prisma.ParticipantsUpdateManyWithoutMeetingNestedInput
-  invites?: Prisma.InviteUpdateManyWithoutMeetingNestedInput
-  joinRequests?: Prisma.JoinRequestUpdateManyWithoutMeetingNestedInput
-}
-
-export type MeetingUncheckedUpdateWithoutChatMessagesInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  token?: Prisma.StringFieldUpdateOperationsInput | string
-  hostId?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  participants?: Prisma.ParticipantsUncheckedUpdateManyWithoutMeetingNestedInput
-  invites?: Prisma.InviteUncheckedUpdateManyWithoutMeetingNestedInput
-  joinRequests?: Prisma.JoinRequestUncheckedUpdateManyWithoutMeetingNestedInput
 }
 
 export type MeetingCreateManyHostInput = {
@@ -978,7 +869,6 @@ export type MeetingUpdateWithoutHostInput = {
   participants?: Prisma.ParticipantsUpdateManyWithoutMeetingNestedInput
   invites?: Prisma.InviteUpdateManyWithoutMeetingNestedInput
   joinRequests?: Prisma.JoinRequestUpdateManyWithoutMeetingNestedInput
-  chatMessages?: Prisma.ChatMessageUpdateManyWithoutMeetingNestedInput
 }
 
 export type MeetingUncheckedUpdateWithoutHostInput = {
@@ -993,7 +883,6 @@ export type MeetingUncheckedUpdateWithoutHostInput = {
   participants?: Prisma.ParticipantsUncheckedUpdateManyWithoutMeetingNestedInput
   invites?: Prisma.InviteUncheckedUpdateManyWithoutMeetingNestedInput
   joinRequests?: Prisma.JoinRequestUncheckedUpdateManyWithoutMeetingNestedInput
-  chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutMeetingNestedInput
 }
 
 export type MeetingUncheckedUpdateManyWithoutHostInput = {
@@ -1016,14 +905,12 @@ export type MeetingCountOutputType = {
   participants: number
   invites: number
   joinRequests: number
-  chatMessages: number
 }
 
 export type MeetingCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   participants?: boolean | MeetingCountOutputTypeCountParticipantsArgs
   invites?: boolean | MeetingCountOutputTypeCountInvitesArgs
   joinRequests?: boolean | MeetingCountOutputTypeCountJoinRequestsArgs
-  chatMessages?: boolean | MeetingCountOutputTypeCountChatMessagesArgs
 }
 
 /**
@@ -1057,13 +944,6 @@ export type MeetingCountOutputTypeCountJoinRequestsArgs<ExtArgs extends runtime.
   where?: Prisma.JoinRequestWhereInput
 }
 
-/**
- * MeetingCountOutputType without action
- */
-export type MeetingCountOutputTypeCountChatMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ChatMessageWhereInput
-}
-
 
 export type MeetingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1079,7 +959,6 @@ export type MeetingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   participants?: boolean | Prisma.Meeting$participantsArgs<ExtArgs>
   invites?: boolean | Prisma.Meeting$invitesArgs<ExtArgs>
   joinRequests?: boolean | Prisma.Meeting$joinRequestsArgs<ExtArgs>
-  chatMessages?: boolean | Prisma.Meeting$chatMessagesArgs<ExtArgs>
   _count?: boolean | Prisma.MeetingCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["meeting"]>
 
@@ -1127,7 +1006,6 @@ export type MeetingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   participants?: boolean | Prisma.Meeting$participantsArgs<ExtArgs>
   invites?: boolean | Prisma.Meeting$invitesArgs<ExtArgs>
   joinRequests?: boolean | Prisma.Meeting$joinRequestsArgs<ExtArgs>
-  chatMessages?: boolean | Prisma.Meeting$chatMessagesArgs<ExtArgs>
   _count?: boolean | Prisma.MeetingCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MeetingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1158,15 +1036,6 @@ export type $MeetingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
      * "Asking to join" requests from non-invited joiners — see `JoinRequest`.
      */
     joinRequests: Prisma.$JoinRequestPayload<ExtArgs>[]
-    /**
-     * Live in-meeting chat, kept only for the meeting's duration — see
-     * `ChatMessage`. Deleted when the host ends the meeting (POST
-     * /api/rooms/[token]/end), matching the room's own "live only, not
-     * saved anywhere" chat design: this is what lets a refresh recover the
-     * conversation while the meeting is still going, without turning chat
-     * into a permanent record once it's over.
-     */
-    chatMessages: Prisma.$ChatMessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     /**
@@ -1616,7 +1485,6 @@ export interface Prisma__MeetingClient<T, Null = never, ExtArgs extends runtime.
   participants<T extends Prisma.Meeting$participantsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Meeting$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ParticipantsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   invites<T extends Prisma.Meeting$invitesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Meeting$invitesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   joinRequests<T extends Prisma.Meeting$joinRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Meeting$joinRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$JoinRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  chatMessages<T extends Prisma.Meeting$chatMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Meeting$chatMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2125,30 +1993,6 @@ export type Meeting$joinRequestsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.JoinRequestScalarFieldEnum | Prisma.JoinRequestScalarFieldEnum[]
-}
-
-/**
- * Meeting.chatMessages
- */
-export type Meeting$chatMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the ChatMessage
-   */
-  select?: Prisma.ChatMessageSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the ChatMessage
-   */
-  omit?: Prisma.ChatMessageOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ChatMessageInclude<ExtArgs> | null
-  where?: Prisma.ChatMessageWhereInput
-  orderBy?: Prisma.ChatMessageOrderByWithRelationInput | Prisma.ChatMessageOrderByWithRelationInput[]
-  cursor?: Prisma.ChatMessageWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ChatMessageScalarFieldEnum | Prisma.ChatMessageScalarFieldEnum[]
 }
 
 /**

@@ -64,14 +64,3 @@ export type Invite = Prisma.InviteModel
  * stays as a record of the decision rather than being deleted.
  */
 export type JoinRequest = Prisma.JoinRequestModel
-/**
- * Model ChatMessage
- * One in-meeting chat message. Written by the socket server (see
- * backend/server.ts's peer:chat-message handler) the moment a message is
- * sent, and read back by the room page on load/refresh so a reload
- * doesn't lose the conversation — the gap this model closes. `fromName`
- * is stored directly rather than joined from `Users` on every read,
- * since a display name shouldn't retroactively change what an old
- * message showed if the sender later renames their account.
- */
-export type ChatMessage = Prisma.ChatMessageModel
