@@ -926,6 +926,7 @@ export const MeetingScalarFieldEnum = {
   hostId: 'hostId',
   createdAt: 'createdAt',
   scheduledAt: 'scheduledAt',
+  timeZone: 'timeZone',
   endAt: 'endAt',
   locked: 'locked',
   passcode: 'passcode',

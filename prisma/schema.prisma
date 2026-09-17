@@ -91,8 +91,10 @@ model Meeting {
 
   /// The user who created this meeting. Automatically assigned as host on
   /// creation and granted host-only controls (mute/remove participants,
-  /// control access, end meeting).
-  host Users @relation("HostedMeetings", fields: [hostId], references: [id])
+  /// control access, end meeting). Deleting the host deletes the meeting
+  /// itself (and, via the cascades below, everything tied to it) — this
+  /// is what makes "delete this account" actually work end to end.
+  host Users @relation("HostedMeetings", fields: [hostId], references: [id], onDelete: Cascade)
 
   /// Foreign key for `host`.
   hostId Int
@@ -120,6 +122,17 @@ model Meeting {
   /// Optional future start time for meetings created through the scheduler.
   /// Null means the meeting is available immediately.
   scheduledAt DateTime?
+
+  /// The IANA timezone (e.g. "Asia/Kolkata") the host was in when they
+  /// picked `scheduledAt`. `scheduledAt` itself is a correct absolute
+  /// instant regardless — Date objects always are — but formatting it
+  /// back into readable text (the scheduling confirmation email, "Scheduled
+  /// for ...") needs to know which zone to render it in, since a server
+  /// process's own default zone (UTC on Vercel) is not the host's. Null
+  /// for meetings scheduled before this field existed, and for
+  /// non-scheduled ("start now") meetings, which have no scheduledAt to
+  /// format in the first place.
+  timeZone String?
 
   /// When the meeting ended. `null` while the meeting is still live/open;
   /// set once the host ends it or the room is otherwise closed.
@@ -158,13 +171,15 @@ model Participants {
   id Int @id @default(autoincrement())
 
   /// The meeting this participant record belongs to.
-  meeting Meeting @relation(fields: [meetingId], references: [id])
+  meeting Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
 
   /// Foreign key for `meeting`.
   meetingId Int
 
-  /// The user this participant record represents.
-  user Users @relation(fields: [userId], references: [id])
+  /// The user this participant record represents. Deleting the user
+  /// deletes their join record too — it's just history, not something
+  /// that should block the user's own deletion.
+  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   /// Foreign key for `user`.
   userId Int
@@ -209,7 +224,7 @@ model Invite {
   id Int @id @default(autoincrement())
 
   /// The meeting this invite grants entry to.
-  meeting Meeting @relation(fields: [meetingId], references: [id])
+  meeting Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
 
   /// Foreign key for `meeting`.
   meetingId Int
@@ -236,13 +251,13 @@ model JoinRequest {
   id Int @id @default(autoincrement())
 
   /// The meeting this request is asking to join.
-  meeting Meeting @relation(fields: [meetingId], references: [id])
+  meeting Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
 
   /// Foreign key for `meeting`.
   meetingId Int
 
   /// The user asking to join.
-  user Users @relation(fields: [userId], references: [id])
+  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   /// Foreign key for `user`.
   userId Int
