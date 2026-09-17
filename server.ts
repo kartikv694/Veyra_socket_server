@@ -235,6 +235,17 @@ io.on("connection", (socket: Socket<any, any, any, SocketData>) => {
     io.to(roomToken).emit(cameraOff ? "meeting:camera-off-all" : "meeting:camera-on-all", { userIds: ids });
   });
 
+  // Lets the host pick how many tiles show at once for everyone (fewer,
+  // bigger tiles vs. more, smaller ones) — same trust model as the other
+  // host:* events above: isHost comes from the authenticated socket's own
+  // participant row, never from the payload, so a non-host emitting this
+  // is silently ignored rather than trusted.
+  socket.on("host:layout-settings", ({ maxVisibleTiles }: { maxVisibleTiles: number }) => {
+    if (!isHost || !Number.isInteger(maxVisibleTiles) || maxVisibleTiles < 1) return;
+    // @ts-ignore
+    io.to(roomToken).emit("meeting:layout-settings", { maxVisibleTiles });
+  });
+
   // Live mic/camera state — deliberately NOT written to the database. It's
   // ephemeral connection state, not the durable Participant.isMuted field;
   // broadcasting it over the socket is what makes mute icons update in
@@ -296,7 +307,10 @@ io.on("connection", (socket: Socket<any, any, any, SocketData>) => {
   socket.on("disconnect", async () => {
     // One user can temporarily have two sockets during a refresh/reconnect.
     // Never mark the DB participant as left while another live socket for the
-    // same user is still in this room.
+    // same user is still in this room — and, just as importantly, don't tell
+    // everyone else they left either, or the two can disagree: everyone
+    // else's UI would show them gone while the database still has them as
+    // present, with nothing to correct it until the next roster poll.
     const roomSocketIds = io.sockets.adapter.rooms.get(roomToken);
     const anotherLiveSocket = roomSocketIds
       ? [...roomSocketIds].some((id) => {
@@ -306,8 +320,9 @@ io.on("connection", (socket: Socket<any, any, any, SocketData>) => {
         })
       : false;
 
-    socket.to(roomToken).emit("peer:left", { socketId: socket.id, userId });
     if (anotherLiveSocket) return;
+
+    socket.to(roomToken).emit("peer:left", { socketId: socket.id, userId });
 
     try {
       await prisma.participants.updateMany({

@@ -10,7 +10,7 @@
  * `src/generated/prisma` folder over `socket-server/generated/prisma` again
  * — the two must stay in sync since they read the same database.
  */
-import { PrismaClient } from "../src/generated/prisma/client.js";
+import { PrismaClient } from "../generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 const globalForPrisma = globalThis as unknown as {
