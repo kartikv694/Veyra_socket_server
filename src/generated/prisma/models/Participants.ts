@@ -789,9 +789,7 @@ export type $ParticipantsPayload<ExtArgs extends runtime.Types.Extensions.Intern
      */
     meeting: Prisma.$MeetingPayload<ExtArgs>
     /**
-     * The user this participant record represents. Deleting the user
-     * deletes their join record too — it's just history, not something
-     * that should block the user's own deletion.
+     * The user this participant record represents.
      */
     user: Prisma.$UsersPayload<ExtArgs>
   }
