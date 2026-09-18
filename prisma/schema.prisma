@@ -116,6 +116,23 @@ model Meeting {
   /// into a permanent record once it's over.
   chatMessages ChatMessage[]
 
+  /// Optional display name for the meeting, set at scheduling time (e.g.
+  /// "Weekly design sync"). Shown in the confirmation email, the
+  /// dashboard's meeting list, and the room header in place of the raw
+  /// room code. Null for meetings created without one — the room code
+  /// alone remains a perfectly fine identifier, this is a nicety.
+  title String?
+
+  /// Optional time limit in minutes, set at scheduling time via a toggle
+  /// (off by default — most meetings run until the host ends them
+  /// manually). When set, the room auto-ends once this many minutes have
+  /// passed since the meeting actually started (`scheduledAt` if this was
+  /// a scheduled meeting, otherwise `createdAt`) — see the room page's
+  /// duration-check effect, which is what actually calls POST
+  /// /api/rooms/[token]/end when the limit is reached. Null means no
+  /// limit; the meeting runs until the host ends it or everyone leaves.
+  durationMinutes Int?
+
   /// When the meeting room was created (i.e. when the host started it).
   createdAt DateTime @default(now())
 
@@ -134,8 +151,21 @@ model Meeting {
   /// format in the first place.
   timeZone String?
 
+  /// When the meeting was last actually used — updated on every
+  /// successful join (see POST /api/rooms/join), not just created once.
+  /// This is what auto-expiry (below) measures against: a meeting nobody
+  /// has rejoined in a while, not just one that's old.
+  lastActivityAt DateTime @default(now())
+
   /// When the meeting ended. `null` while the meeting is still live/open;
-  /// set once the host ends it or the room is otherwise closed.
+  /// set once the host ends it, the room is otherwise closed, or it
+  /// auto-expires from disuse — see the join route's expiry check, which
+  /// treats a meeting nobody has used in `MEETING_EXPIRY_MS` (see
+  /// src/lib/meeting-expiry.ts) the same as an explicitly-ended one: sets
+  /// this, clears active participants, deletes chat. A meeting can sit
+  /// open indefinitely if the host never explicitly ends it and nobody
+  /// ever tries the link again — this is what stops that link from
+  /// staying valid forever instead.
   endAt DateTime?
 
   /// Host-controlled access gate (SRS: "control meeting access"). When

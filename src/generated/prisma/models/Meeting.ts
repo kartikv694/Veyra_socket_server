@@ -32,20 +32,25 @@ export type AggregateMeeting = {
 export type MeetingAvgAggregateOutputType = {
   id: number | null
   hostId: number | null
+  durationMinutes: number | null
 }
 
 export type MeetingSumAggregateOutputType = {
   id: number | null
   hostId: number | null
+  durationMinutes: number | null
 }
 
 export type MeetingMinAggregateOutputType = {
   id: number | null
   token: string | null
   hostId: number | null
+  title: string | null
+  durationMinutes: number | null
   createdAt: Date | null
   scheduledAt: Date | null
   timeZone: string | null
+  lastActivityAt: Date | null
   endAt: Date | null
   locked: boolean | null
   passcode: string | null
@@ -56,9 +61,12 @@ export type MeetingMaxAggregateOutputType = {
   id: number | null
   token: string | null
   hostId: number | null
+  title: string | null
+  durationMinutes: number | null
   createdAt: Date | null
   scheduledAt: Date | null
   timeZone: string | null
+  lastActivityAt: Date | null
   endAt: Date | null
   locked: boolean | null
   passcode: string | null
@@ -69,9 +77,12 @@ export type MeetingCountAggregateOutputType = {
   id: number
   token: number
   hostId: number
+  title: number
+  durationMinutes: number
   createdAt: number
   scheduledAt: number
   timeZone: number
+  lastActivityAt: number
   endAt: number
   locked: number
   passcode: number
@@ -83,20 +94,25 @@ export type MeetingCountAggregateOutputType = {
 export type MeetingAvgAggregateInputType = {
   id?: true
   hostId?: true
+  durationMinutes?: true
 }
 
 export type MeetingSumAggregateInputType = {
   id?: true
   hostId?: true
+  durationMinutes?: true
 }
 
 export type MeetingMinAggregateInputType = {
   id?: true
   token?: true
   hostId?: true
+  title?: true
+  durationMinutes?: true
   createdAt?: true
   scheduledAt?: true
   timeZone?: true
+  lastActivityAt?: true
   endAt?: true
   locked?: true
   passcode?: true
@@ -107,9 +123,12 @@ export type MeetingMaxAggregateInputType = {
   id?: true
   token?: true
   hostId?: true
+  title?: true
+  durationMinutes?: true
   createdAt?: true
   scheduledAt?: true
   timeZone?: true
+  lastActivityAt?: true
   endAt?: true
   locked?: true
   passcode?: true
@@ -120,9 +139,12 @@ export type MeetingCountAggregateInputType = {
   id?: true
   token?: true
   hostId?: true
+  title?: true
+  durationMinutes?: true
   createdAt?: true
   scheduledAt?: true
   timeZone?: true
+  lastActivityAt?: true
   endAt?: true
   locked?: true
   passcode?: true
@@ -220,9 +242,12 @@ export type MeetingGroupByOutputType = {
   id: number
   token: string
   hostId: number
+  title: string | null
+  durationMinutes: number | null
   createdAt: Date
   scheduledAt: Date | null
   timeZone: string | null
+  lastActivityAt: Date
   endAt: Date | null
   locked: boolean
   passcode: string | null
@@ -256,9 +281,12 @@ export type MeetingWhereInput = {
   id?: Prisma.IntFilter<"Meeting"> | number
   token?: Prisma.StringFilter<"Meeting"> | string
   hostId?: Prisma.IntFilter<"Meeting"> | number
+  title?: Prisma.StringNullableFilter<"Meeting"> | string | null
+  durationMinutes?: Prisma.IntNullableFilter<"Meeting"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Meeting"> | Date | string
   scheduledAt?: Prisma.DateTimeNullableFilter<"Meeting"> | Date | string | null
   timeZone?: Prisma.StringNullableFilter<"Meeting"> | string | null
+  lastActivityAt?: Prisma.DateTimeFilter<"Meeting"> | Date | string
   endAt?: Prisma.DateTimeNullableFilter<"Meeting"> | Date | string | null
   locked?: Prisma.BoolFilter<"Meeting"> | boolean
   passcode?: Prisma.StringNullableFilter<"Meeting"> | string | null
@@ -274,9 +302,12 @@ export type MeetingOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   token?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
+  title?: Prisma.SortOrderInput | Prisma.SortOrder
+  durationMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   timeZone?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastActivityAt?: Prisma.SortOrder
   endAt?: Prisma.SortOrderInput | Prisma.SortOrder
   locked?: Prisma.SortOrder
   passcode?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -295,9 +326,12 @@ export type MeetingWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.MeetingWhereInput[]
   NOT?: Prisma.MeetingWhereInput | Prisma.MeetingWhereInput[]
   hostId?: Prisma.IntFilter<"Meeting"> | number
+  title?: Prisma.StringNullableFilter<"Meeting"> | string | null
+  durationMinutes?: Prisma.IntNullableFilter<"Meeting"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Meeting"> | Date | string
   scheduledAt?: Prisma.DateTimeNullableFilter<"Meeting"> | Date | string | null
   timeZone?: Prisma.StringNullableFilter<"Meeting"> | string | null
+  lastActivityAt?: Prisma.DateTimeFilter<"Meeting"> | Date | string
   endAt?: Prisma.DateTimeNullableFilter<"Meeting"> | Date | string | null
   locked?: Prisma.BoolFilter<"Meeting"> | boolean
   passcode?: Prisma.StringNullableFilter<"Meeting"> | string | null
@@ -313,9 +347,12 @@ export type MeetingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   token?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
+  title?: Prisma.SortOrderInput | Prisma.SortOrder
+  durationMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   timeZone?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastActivityAt?: Prisma.SortOrder
   endAt?: Prisma.SortOrderInput | Prisma.SortOrder
   locked?: Prisma.SortOrder
   passcode?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -334,9 +371,12 @@ export type MeetingScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"Meeting"> | number
   token?: Prisma.StringWithAggregatesFilter<"Meeting"> | string
   hostId?: Prisma.IntWithAggregatesFilter<"Meeting"> | number
+  title?: Prisma.StringNullableWithAggregatesFilter<"Meeting"> | string | null
+  durationMinutes?: Prisma.IntNullableWithAggregatesFilter<"Meeting"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Meeting"> | Date | string
   scheduledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Meeting"> | Date | string | null
   timeZone?: Prisma.StringNullableWithAggregatesFilter<"Meeting"> | string | null
+  lastActivityAt?: Prisma.DateTimeWithAggregatesFilter<"Meeting"> | Date | string
   endAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Meeting"> | Date | string | null
   locked?: Prisma.BoolWithAggregatesFilter<"Meeting"> | boolean
   passcode?: Prisma.StringNullableWithAggregatesFilter<"Meeting"> | string | null
@@ -345,9 +385,12 @@ export type MeetingScalarWhereWithAggregatesInput = {
 
 export type MeetingCreateInput = {
   token: string
+  title?: string | null
+  durationMinutes?: number | null
   createdAt?: Date | string
   scheduledAt?: Date | string | null
   timeZone?: string | null
+  lastActivityAt?: Date | string
   endAt?: Date | string | null
   locked?: boolean
   passcode?: string | null
@@ -363,9 +406,12 @@ export type MeetingUncheckedCreateInput = {
   id?: number
   token: string
   hostId: number
+  title?: string | null
+  durationMinutes?: number | null
   createdAt?: Date | string
   scheduledAt?: Date | string | null
   timeZone?: string | null
+  lastActivityAt?: Date | string
   endAt?: Date | string | null
   locked?: boolean
   passcode?: string | null
@@ -378,9 +424,12 @@ export type MeetingUncheckedCreateInput = {
 
 export type MeetingUpdateInput = {
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -396,9 +445,12 @@ export type MeetingUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   token?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -413,9 +465,12 @@ export type MeetingCreateManyInput = {
   id?: number
   token: string
   hostId: number
+  title?: string | null
+  durationMinutes?: number | null
   createdAt?: Date | string
   scheduledAt?: Date | string | null
   timeZone?: string | null
+  lastActivityAt?: Date | string
   endAt?: Date | string | null
   locked?: boolean
   passcode?: string | null
@@ -424,9 +479,12 @@ export type MeetingCreateManyInput = {
 
 export type MeetingUpdateManyMutationInput = {
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -437,9 +495,12 @@ export type MeetingUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   token?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -460,9 +521,12 @@ export type MeetingCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   token?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  durationMinutes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
   timeZone?: Prisma.SortOrder
+  lastActivityAt?: Prisma.SortOrder
   endAt?: Prisma.SortOrder
   locked?: Prisma.SortOrder
   passcode?: Prisma.SortOrder
@@ -472,15 +536,19 @@ export type MeetingCountOrderByAggregateInput = {
 export type MeetingAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
+  durationMinutes?: Prisma.SortOrder
 }
 
 export type MeetingMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   token?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  durationMinutes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
   timeZone?: Prisma.SortOrder
+  lastActivityAt?: Prisma.SortOrder
   endAt?: Prisma.SortOrder
   locked?: Prisma.SortOrder
   passcode?: Prisma.SortOrder
@@ -491,9 +559,12 @@ export type MeetingMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   token?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
+  title?: Prisma.SortOrder
+  durationMinutes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   scheduledAt?: Prisma.SortOrder
   timeZone?: Prisma.SortOrder
+  lastActivityAt?: Prisma.SortOrder
   endAt?: Prisma.SortOrder
   locked?: Prisma.SortOrder
   passcode?: Prisma.SortOrder
@@ -503,6 +574,7 @@ export type MeetingMinOrderByAggregateInput = {
 export type MeetingSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   hostId?: Prisma.SortOrder
+  durationMinutes?: Prisma.SortOrder
 }
 
 export type MeetingScalarRelationFilter = {
@@ -550,6 +622,14 @@ export type MeetingUncheckedUpdateManyWithoutHostNestedInput = {
   update?: Prisma.MeetingUpdateWithWhereUniqueWithoutHostInput | Prisma.MeetingUpdateWithWhereUniqueWithoutHostInput[]
   updateMany?: Prisma.MeetingUpdateManyWithWhereWithoutHostInput | Prisma.MeetingUpdateManyWithWhereWithoutHostInput[]
   deleteMany?: Prisma.MeetingScalarWhereInput | Prisma.MeetingScalarWhereInput[]
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type BoolFieldUpdateOperationsInput = {
@@ -614,9 +694,12 @@ export type MeetingUpdateOneRequiredWithoutChatMessagesNestedInput = {
 
 export type MeetingCreateWithoutHostInput = {
   token: string
+  title?: string | null
+  durationMinutes?: number | null
   createdAt?: Date | string
   scheduledAt?: Date | string | null
   timeZone?: string | null
+  lastActivityAt?: Date | string
   endAt?: Date | string | null
   locked?: boolean
   passcode?: string | null
@@ -630,9 +713,12 @@ export type MeetingCreateWithoutHostInput = {
 export type MeetingUncheckedCreateWithoutHostInput = {
   id?: number
   token: string
+  title?: string | null
+  durationMinutes?: number | null
   createdAt?: Date | string
   scheduledAt?: Date | string | null
   timeZone?: string | null
+  lastActivityAt?: Date | string
   endAt?: Date | string | null
   locked?: boolean
   passcode?: string | null
@@ -676,9 +762,12 @@ export type MeetingScalarWhereInput = {
   id?: Prisma.IntFilter<"Meeting"> | number
   token?: Prisma.StringFilter<"Meeting"> | string
   hostId?: Prisma.IntFilter<"Meeting"> | number
+  title?: Prisma.StringNullableFilter<"Meeting"> | string | null
+  durationMinutes?: Prisma.IntNullableFilter<"Meeting"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Meeting"> | Date | string
   scheduledAt?: Prisma.DateTimeNullableFilter<"Meeting"> | Date | string | null
   timeZone?: Prisma.StringNullableFilter<"Meeting"> | string | null
+  lastActivityAt?: Prisma.DateTimeFilter<"Meeting"> | Date | string
   endAt?: Prisma.DateTimeNullableFilter<"Meeting"> | Date | string | null
   locked?: Prisma.BoolFilter<"Meeting"> | boolean
   passcode?: Prisma.StringNullableFilter<"Meeting"> | string | null
@@ -687,9 +776,12 @@ export type MeetingScalarWhereInput = {
 
 export type MeetingCreateWithoutParticipantsInput = {
   token: string
+  title?: string | null
+  durationMinutes?: number | null
   createdAt?: Date | string
   scheduledAt?: Date | string | null
   timeZone?: string | null
+  lastActivityAt?: Date | string
   endAt?: Date | string | null
   locked?: boolean
   passcode?: string | null
@@ -704,9 +796,12 @@ export type MeetingUncheckedCreateWithoutParticipantsInput = {
   id?: number
   token: string
   hostId: number
+  title?: string | null
+  durationMinutes?: number | null
   createdAt?: Date | string
   scheduledAt?: Date | string | null
   timeZone?: string | null
+  lastActivityAt?: Date | string
   endAt?: Date | string | null
   locked?: boolean
   passcode?: string | null
@@ -734,9 +829,12 @@ export type MeetingUpdateToOneWithWhereWithoutParticipantsInput = {
 
 export type MeetingUpdateWithoutParticipantsInput = {
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -751,9 +849,12 @@ export type MeetingUncheckedUpdateWithoutParticipantsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   token?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -765,9 +866,12 @@ export type MeetingUncheckedUpdateWithoutParticipantsInput = {
 
 export type MeetingCreateWithoutInvitesInput = {
   token: string
+  title?: string | null
+  durationMinutes?: number | null
   createdAt?: Date | string
   scheduledAt?: Date | string | null
   timeZone?: string | null
+  lastActivityAt?: Date | string
   endAt?: Date | string | null
   locked?: boolean
   passcode?: string | null
@@ -782,9 +886,12 @@ export type MeetingUncheckedCreateWithoutInvitesInput = {
   id?: number
   token: string
   hostId: number
+  title?: string | null
+  durationMinutes?: number | null
   createdAt?: Date | string
   scheduledAt?: Date | string | null
   timeZone?: string | null
+  lastActivityAt?: Date | string
   endAt?: Date | string | null
   locked?: boolean
   passcode?: string | null
@@ -812,9 +919,12 @@ export type MeetingUpdateToOneWithWhereWithoutInvitesInput = {
 
 export type MeetingUpdateWithoutInvitesInput = {
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -829,9 +939,12 @@ export type MeetingUncheckedUpdateWithoutInvitesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   token?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -843,9 +956,12 @@ export type MeetingUncheckedUpdateWithoutInvitesInput = {
 
 export type MeetingCreateWithoutJoinRequestsInput = {
   token: string
+  title?: string | null
+  durationMinutes?: number | null
   createdAt?: Date | string
   scheduledAt?: Date | string | null
   timeZone?: string | null
+  lastActivityAt?: Date | string
   endAt?: Date | string | null
   locked?: boolean
   passcode?: string | null
@@ -860,9 +976,12 @@ export type MeetingUncheckedCreateWithoutJoinRequestsInput = {
   id?: number
   token: string
   hostId: number
+  title?: string | null
+  durationMinutes?: number | null
   createdAt?: Date | string
   scheduledAt?: Date | string | null
   timeZone?: string | null
+  lastActivityAt?: Date | string
   endAt?: Date | string | null
   locked?: boolean
   passcode?: string | null
@@ -890,9 +1009,12 @@ export type MeetingUpdateToOneWithWhereWithoutJoinRequestsInput = {
 
 export type MeetingUpdateWithoutJoinRequestsInput = {
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -907,9 +1029,12 @@ export type MeetingUncheckedUpdateWithoutJoinRequestsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   token?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -921,9 +1046,12 @@ export type MeetingUncheckedUpdateWithoutJoinRequestsInput = {
 
 export type MeetingCreateWithoutChatMessagesInput = {
   token: string
+  title?: string | null
+  durationMinutes?: number | null
   createdAt?: Date | string
   scheduledAt?: Date | string | null
   timeZone?: string | null
+  lastActivityAt?: Date | string
   endAt?: Date | string | null
   locked?: boolean
   passcode?: string | null
@@ -938,9 +1066,12 @@ export type MeetingUncheckedCreateWithoutChatMessagesInput = {
   id?: number
   token: string
   hostId: number
+  title?: string | null
+  durationMinutes?: number | null
   createdAt?: Date | string
   scheduledAt?: Date | string | null
   timeZone?: string | null
+  lastActivityAt?: Date | string
   endAt?: Date | string | null
   locked?: boolean
   passcode?: string | null
@@ -968,9 +1099,12 @@ export type MeetingUpdateToOneWithWhereWithoutChatMessagesInput = {
 
 export type MeetingUpdateWithoutChatMessagesInput = {
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -985,9 +1119,12 @@ export type MeetingUncheckedUpdateWithoutChatMessagesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   token?: Prisma.StringFieldUpdateOperationsInput | string
   hostId?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1000,9 +1137,12 @@ export type MeetingUncheckedUpdateWithoutChatMessagesInput = {
 export type MeetingCreateManyHostInput = {
   id?: number
   token: string
+  title?: string | null
+  durationMinutes?: number | null
   createdAt?: Date | string
   scheduledAt?: Date | string | null
   timeZone?: string | null
+  lastActivityAt?: Date | string
   endAt?: Date | string | null
   locked?: boolean
   passcode?: string | null
@@ -1011,9 +1151,12 @@ export type MeetingCreateManyHostInput = {
 
 export type MeetingUpdateWithoutHostInput = {
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1027,9 +1170,12 @@ export type MeetingUpdateWithoutHostInput = {
 export type MeetingUncheckedUpdateWithoutHostInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1043,9 +1189,12 @@ export type MeetingUncheckedUpdateWithoutHostInput = {
 export type MeetingUncheckedUpdateManyWithoutHostInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   token?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   timeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastActivityAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   passcode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1114,9 +1263,12 @@ export type MeetingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   token?: boolean
   hostId?: boolean
+  title?: boolean
+  durationMinutes?: boolean
   createdAt?: boolean
   scheduledAt?: boolean
   timeZone?: boolean
+  lastActivityAt?: boolean
   endAt?: boolean
   locked?: boolean
   passcode?: boolean
@@ -1133,9 +1285,12 @@ export type MeetingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   token?: boolean
   hostId?: boolean
+  title?: boolean
+  durationMinutes?: boolean
   createdAt?: boolean
   scheduledAt?: boolean
   timeZone?: boolean
+  lastActivityAt?: boolean
   endAt?: boolean
   locked?: boolean
   passcode?: boolean
@@ -1147,9 +1302,12 @@ export type MeetingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   token?: boolean
   hostId?: boolean
+  title?: boolean
+  durationMinutes?: boolean
   createdAt?: boolean
   scheduledAt?: boolean
   timeZone?: boolean
+  lastActivityAt?: boolean
   endAt?: boolean
   locked?: boolean
   passcode?: boolean
@@ -1161,16 +1319,19 @@ export type MeetingSelectScalar = {
   id?: boolean
   token?: boolean
   hostId?: boolean
+  title?: boolean
+  durationMinutes?: boolean
   createdAt?: boolean
   scheduledAt?: boolean
   timeZone?: boolean
+  lastActivityAt?: boolean
   endAt?: boolean
   locked?: boolean
   passcode?: boolean
   updatedAt?: boolean
 }
 
-export type MeetingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "token" | "hostId" | "createdAt" | "scheduledAt" | "timeZone" | "endAt" | "locked" | "passcode" | "updatedAt", ExtArgs["result"]["meeting"]>
+export type MeetingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "token" | "hostId" | "title" | "durationMinutes" | "createdAt" | "scheduledAt" | "timeZone" | "lastActivityAt" | "endAt" | "locked" | "passcode" | "updatedAt", ExtArgs["result"]["meeting"]>
 export type MeetingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   host?: boolean | Prisma.UsersDefaultArgs<ExtArgs>
   participants?: boolean | Prisma.Meeting$participantsArgs<ExtArgs>
@@ -1235,6 +1396,25 @@ export type $MeetingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
      */
     hostId: number
     /**
+     * Optional display name for the meeting, set at scheduling time (e.g.
+     * "Weekly design sync"). Shown in the confirmation email, the
+     * dashboard's meeting list, and the room header in place of the raw
+     * room code. Null for meetings created without one — the room code
+     * alone remains a perfectly fine identifier, this is a nicety.
+     */
+    title: string | null
+    /**
+     * Optional time limit in minutes, set at scheduling time via a toggle
+     * (off by default — most meetings run until the host ends them
+     * manually). When set, the room auto-ends once this many minutes have
+     * passed since the meeting actually started (`scheduledAt` if this was
+     * a scheduled meeting, otherwise `createdAt`) — see the room page's
+     * duration-check effect, which is what actually calls POST
+     * /api/rooms/[token]/end when the limit is reached. Null means no
+     * limit; the meeting runs until the host ends it or everyone leaves.
+     */
+    durationMinutes: number | null
+    /**
      * When the meeting room was created (i.e. when the host started it).
      */
     createdAt: Date
@@ -1256,8 +1436,22 @@ export type $MeetingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
      */
     timeZone: string | null
     /**
+     * When the meeting was last actually used — updated on every
+     * successful join (see POST /api/rooms/join), not just created once.
+     * This is what auto-expiry (below) measures against: a meeting nobody
+     * has rejoined in a while, not just one that's old.
+     */
+    lastActivityAt: Date
+    /**
      * When the meeting ended. `null` while the meeting is still live/open;
-     * set once the host ends it or the room is otherwise closed.
+     * set once the host ends it, the room is otherwise closed, or it
+     * auto-expires from disuse — see the join route's expiry check, which
+     * treats a meeting nobody has used in `MEETING_EXPIRY_MS` (see
+     * src/lib/meeting-expiry.ts) the same as an explicitly-ended one: sets
+     * this, clears active participants, deletes chat. A meeting can sit
+     * open indefinitely if the host never explicitly ends it and nobody
+     * ever tries the link again — this is what stops that link from
+     * staying valid forever instead.
      */
     endAt: Date | null
     /**
@@ -1712,9 +1906,12 @@ export interface MeetingFieldRefs {
   readonly id: Prisma.FieldRef<"Meeting", 'Int'>
   readonly token: Prisma.FieldRef<"Meeting", 'String'>
   readonly hostId: Prisma.FieldRef<"Meeting", 'Int'>
+  readonly title: Prisma.FieldRef<"Meeting", 'String'>
+  readonly durationMinutes: Prisma.FieldRef<"Meeting", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Meeting", 'DateTime'>
   readonly scheduledAt: Prisma.FieldRef<"Meeting", 'DateTime'>
   readonly timeZone: Prisma.FieldRef<"Meeting", 'String'>
+  readonly lastActivityAt: Prisma.FieldRef<"Meeting", 'DateTime'>
   readonly endAt: Prisma.FieldRef<"Meeting", 'DateTime'>
   readonly locked: Prisma.FieldRef<"Meeting", 'Boolean'>
   readonly passcode: Prisma.FieldRef<"Meeting", 'String'>
